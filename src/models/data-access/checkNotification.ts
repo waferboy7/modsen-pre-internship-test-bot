@@ -4,7 +4,7 @@ import UserNotification from '../../config/interfaces/UserNotification.js';
 import startConnection from './startConnection.js';
 
 export default async function checkNotification() {
-  const client: PoolClient = await startConnection()!;
+  const client: PoolClient = await startConnection();
 
   try {
     const usersNotification: UserNotification[] = await client

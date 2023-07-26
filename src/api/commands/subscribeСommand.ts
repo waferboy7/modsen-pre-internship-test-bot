@@ -1,12 +1,13 @@
 import axios from 'axios';
 
 import { WEATHER_KEY, WEATHER_URL } from '../../config/index.js';
+import IContextMessage from '../../config/interfaces/IContextMessage.js';
 import WeatherResponse from '../../config/interfaces/WeatgerResponce.js';
 import { isSubcribed, subscribeWeatherBD } from '../../models/data-access/subcribeWeather.js';
 
 const getFullUrl = (city: string) => `${WEATHER_URL}${city}&units=metric&lang=ru&appid=${WEATHER_KEY}`;
 
-const subscribeCommand = async (ctx: { message: any; reply?: any }) => {
+const subscribeCommand = async (ctx: IContextMessage) => {
   const { message } = ctx;
 
   const commandParams = message.text.split(' ');
@@ -24,9 +25,9 @@ const subscribeCommand = async (ctx: { message: any; reply?: any }) => {
 
         ctx.reply(`Вы подписались на подписку погоды по городу ${city}`);
       }
-    } catch (e: Error | any | unknown) {
-      console.log("subcribeCommand: ", e.message);
-      throw e;
+    } catch (error) {
+      console.log("subcribeCommand: ", (error as Error).message);
+      throw error;
     }
   } else {
     ctx.reply('Пожалуйста, укажите параметр после команды.');
