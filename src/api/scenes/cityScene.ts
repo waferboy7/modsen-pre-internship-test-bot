@@ -17,7 +17,11 @@ cityScene.enter((ctx: Context) => {
 });
 
 cityScene.leave((ctx: IContext) => {
-  ctx.reply('До связи... ПУП... ПУП... ПУП...');
+  ctx.reply('До связи... ПУП... ПУП... ПУП...', {
+    reply_markup: {
+      remove_keyboard: true, // Убираем клавиатуру
+    },
+  });
 });
 
 cityScene.command('leave', (ctx: IContext) => {

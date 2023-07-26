@@ -8,6 +8,7 @@ import commandNotFound from './api/commands/commandNotFound.js';
 import dogCommand from './api/commands/dogCommand.js';
 import errorHandler from './api/commands/errorHandler.js';
 import helpCommand from './api/commands/helpCommand.js';
+import reminderCommand from './api/commands/remindeCommand.js';
 import startCommand from './api/commands/startCommand.js';
 import subscribeCommand from './api/commands/subscribeСommand.js';
 import unSubscribeCommand from './api/commands/unSubscribeCommand.js';
@@ -16,6 +17,7 @@ import bot from './api/index.js';
 import cityScene from './api/scenes/cityScene.js';
 import IContext from './config/interfaces/IContext.js';
 import sendNotification from './subscribers/sendNotification.js';
+import sendReminde from './subscribers/sendReminde.js';
 
 console.log('start');
 
@@ -38,6 +40,8 @@ bot.command('subscribe', subscribeCommand);
 
 bot.command('unsubscribe', unSubscribeCommand);
 
+bot.command('reminde', reminderCommand);
+
 bot.use(session());
 bot.use(stage.middleware());
 bot.use((ctx: IContext, next) => {
@@ -53,6 +57,10 @@ bot.on(message('text'), commandNotFound);
 
 cron.schedule('0 * * * *', () => {
   sendNotification();
+});
+
+cron.schedule('* * * * *', () => {
+  sendReminde();
 });
 
 bot.launch();

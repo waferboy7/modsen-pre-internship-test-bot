@@ -1,11 +1,7 @@
-// import startConnection from "./startConnection.js";
-
 import startConnection from './startConnection.js';
 
 export default async function newUser(userId: string) {
-  // const connection = startConnection()!;
-
-  const client = await startConnection()!;
+  const client = await startConnection();
 
   const user: object[] = await client
     .query(`SELECT user_id FROM subscribers WHERE user_id = $1`, [userId])
