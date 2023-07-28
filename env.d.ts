@@ -5,4 +5,7 @@ export default interface IDotEnv {
   WEATHER_KEY: string;
   WEATHER_URL: string;
   DB_KEY: string;
+  REC_API_KEY: string;
+  REC_KEY: string;
+  REC_URL: string;
 }

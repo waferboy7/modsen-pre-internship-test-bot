@@ -1,5 +1,4 @@
 import { Context } from 'telegraf';
-import { message } from 'telegraf/filters';
 import { BaseScene, Stage } from 'telegraf/scenes';
 
 import IContext from '../../config/interfaces/IContext.js';

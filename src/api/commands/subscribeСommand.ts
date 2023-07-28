@@ -1,11 +1,9 @@
 import axios from 'axios';
 
-import { WEATHER_KEY, WEATHER_URL } from '../../config/index.js';
+import getFullUrlWeather from '../../config/constaint/getFullUrlWeather.js';
 import IContextMessage from '../../config/interfaces/IContextMessage.js';
 import WeatherResponse from '../../config/interfaces/WeatgerResponce.js';
 import { isSubcribed, subscribeWeatherBD } from '../../models/data-access/subcribeWeather.js';
-
-const getFullUrl = (city: string) => `${WEATHER_URL}${city}&units=metric&lang=ru&appid=${WEATHER_KEY}`;
 
 const subscribeCommand = async (ctx: IContextMessage) => {
   const { message } = ctx;
@@ -19,7 +17,7 @@ const subscribeCommand = async (ctx: IContextMessage) => {
       } else {
         const city = commandParams[1];
 
-        await axios.get(getFullUrl(city)).then(({ data }: { data: WeatherResponse }) => data.name);
+        await axios.get(getFullUrlWeather(city)).then(({ data }: { data: WeatherResponse }) => data.name);
 
         await subscribeWeatherBD(message.from.id, city);
 
