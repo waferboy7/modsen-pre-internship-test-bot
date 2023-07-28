@@ -20,5 +20,8 @@
   "lib": ["esnext"],
   "ts-node": {
     "esm": true
+  },
+  "paths": {
+    "@commands/*": ["api/commands/*"],
   }
 }

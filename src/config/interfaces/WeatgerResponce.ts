@@ -1,5 +1,5 @@
 export default interface WeatherResponse {
-  coord: { lon: number; lat: number };
+  coord: { lon: string; lat: string };
   weather: {
     id: number;
     main: string;
