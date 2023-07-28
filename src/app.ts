@@ -18,13 +18,14 @@ import recCoordsScene from './api/scenes/reccomend/recCoordsScene.js';
 import recKindScene from './api/scenes/reccomend/recKindScene.js';
 import recRadiusScene from './api/scenes/reccomend/recRadiusScene.js';
 import recTotalScene from './api/scenes/reccomend/recTotalScene.js';
+import weatherScene from './api/scenes/weather/weatherScene.js';
 import IContext from './config/interfaces/IContext.js';
 import sendNotification from './subscribers/sendNotification.js';
 import sendReminde from './subscribers/sendReminde.js';
 
 console.log('start');
 
-const stage = new Stage<IContext>([cityScene, recCoordsScene, recKindScene, recRadiusScene, recTotalScene]);
+const stage = new Stage<IContext>([cityScene, recCoordsScene, recKindScene, recRadiusScene, recTotalScene, weatherScene]);
 
 bot.use(session<IContext>());
 bot.use(stage.middleware());
@@ -47,7 +48,10 @@ bot.catch(errorHandler);
 
 bot.command('cat', catCommand);
 
-bot.command('weather', weatherCommand);
+// bot.command('weather', weatherCommand);
+bot.command('weather', async (ctx) => {
+  await ctx.scene.enter('weather');
+});
 
 bot.command('dog', dogCommand);
 
@@ -65,7 +69,7 @@ bot.command('hello', async (ctx) => {
   await ctx.scene.enter('city', { reply_markup: { remove_keyboard: true } });
 });
 
-bot.on("message", commandNotFound);
+bot.on('message', commandNotFound);
 
 cron.schedule('0 * * * *', () => {
   sendNotification();
