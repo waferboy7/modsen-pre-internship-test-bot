@@ -18,6 +18,7 @@ import recCoordsScene from './api/scenes/reccomend/recCoordsScene.js';
 import recKindScene from './api/scenes/reccomend/recKindScene.js';
 import recRadiusScene from './api/scenes/reccomend/recRadiusScene.js';
 import recTotalScene from './api/scenes/reccomend/recTotalScene.js';
+import subscribeScene from './api/scenes/subscribe/subscribeScene.js';
 import weatherScene from './api/scenes/weather/weatherScene.js';
 import IContext from './config/interfaces/IContext.js';
 import sendNotification from './subscribers/sendNotification.js';
@@ -25,7 +26,15 @@ import sendReminde from './subscribers/sendReminde.js';
 
 console.log('start');
 
-const stage = new Stage<IContext>([cityScene, recCoordsScene, recKindScene, recRadiusScene, recTotalScene, weatherScene]);
+const stage = new Stage<IContext>([
+  cityScene,
+  recCoordsScene,
+  recKindScene,
+  recRadiusScene,
+  recTotalScene,
+  weatherScene,
+  subscribeScene,
+]);
 
 bot.use(session<IContext>());
 bot.use(stage.middleware());
@@ -55,7 +64,10 @@ bot.command('weather', async (ctx) => {
 
 bot.command('dog', dogCommand);
 
-bot.command('subscribe', subscribeCommand);
+// bot.command('subscribe', subscribeCommand);
+bot.command('subscribe', async (ctx) => {
+  await ctx.scene.enter('subscribe');
+});
 
 bot.command('unsubscribe', unSubscribeCommand);
 
