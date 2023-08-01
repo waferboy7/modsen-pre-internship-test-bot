@@ -18,6 +18,10 @@ import recCoordsScene from './api/scenes/reccomend/recCoordsScene.js';
 import recKindScene from './api/scenes/reccomend/recKindScene.js';
 import recRadiusScene from './api/scenes/reccomend/recRadiusScene.js';
 import recTotalScene from './api/scenes/reccomend/recTotalScene.js';
+import remindeDateScene from './api/scenes/reminde/remindeDateScene.js';
+import remindeNameScene from './api/scenes/reminde/remindeNameScene.js';
+import remindeTimeScene from './api/scenes/reminde/remindeTimeScene.js';
+import remindeTotalScene from './api/scenes/reminde/remindeTotalScene.js';
 import subscribeScene from './api/scenes/subscribe/subscribeScene.js';
 import weatherScene from './api/scenes/weather/weatherScene.js';
 import IContext from './config/interfaces/IContext.js';
@@ -34,6 +38,10 @@ const stage = new Stage<IContext>([
   recTotalScene,
   weatherScene,
   subscribeScene,
+  remindeNameScene,
+  remindeDateScene,
+  remindeTimeScene,
+  remindeTotalScene,
 ]);
 
 bot.use(session<IContext>());
@@ -45,6 +53,9 @@ bot.use((ctx: IContext, next) => {
   ctx.session.lat ??= '';
   ctx.session.kind ??= '';
   ctx.session.radius ??= 0;
+  ctx.session.name ??= '';
+  ctx.session.date ??= '';
+  ctx.session.time ??= '';
 
   return next();
 });
@@ -71,9 +82,12 @@ bot.command('subscribe', async (ctx) => {
 
 bot.command('unsubscribe', unSubscribeCommand);
 
-bot.command('reminde', reminderCommand);
+// bot.command('reminde', reminderCommand);
+bot.command('reminde', async (ctx) => {
+  await ctx.scene.enter('reminde');
+});
 
-bot.command('reccomend', async (ctx) => {
+bot.command('recommend', async (ctx) => {
   await ctx.scene.enter('recommend');
 });
 

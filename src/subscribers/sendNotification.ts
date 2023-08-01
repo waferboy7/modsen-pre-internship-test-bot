@@ -13,7 +13,7 @@ function capitalizeFirstLetter(str: string) {
 const getWeatherInfo = async (user: UserNotification) => {
   try {
     await axios.get(getFullUrlWeather(user.city)).then(({ data }: { data: WeatherResponse }) => {
-      const answer = `Прогноз погоды в городе ${data.name}: ${capitalizeFirstLetter(
+      const answer = `Прогноз погоды в городе ${data.name}:\n${capitalizeFirstLetter(
         data.weather[0].description,
       )}\n\nТемпература: ${Math.floor(data.main.temp)} °C\n\nОщущается как ${Math.floor(data.main.feels_like)} °C\n`;
 

@@ -8,6 +8,9 @@ interface ISceneCustom extends ISceneSession {
   lon?: string;
   radius?: number;
   kind?: string;
+  name?: string;
+  date?: string;
+  time?: string;
 }
 
 export default interface MyContext extends Context {
