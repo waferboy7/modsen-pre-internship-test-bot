@@ -14,6 +14,9 @@ export default async function checkReminde(time: Date) {
       .then((response) => response.rows);
 
     return usersReminde;
+  } catch (error) {
+    console.log((error as Error).message);
+    return [];
   } finally {
     client.release();
   }

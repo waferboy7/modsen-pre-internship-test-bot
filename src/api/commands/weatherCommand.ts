@@ -1,13 +1,14 @@
 import axios from 'axios';
 
 import getFullUrlWeather from '../../config/constaint/getFullUrlWeather.js';
+import IContextMessage from '../../config/interfaces/IContextMessage.js';
 import WeatherResponse from '../../config/interfaces/WeatgerResponce.js';
 
 function capitalizeFirstLetter(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-const weatherCommand = async (ctx: { message: { text: string }; reply: (arg0: string) => void }) => {
+const weatherCommand = async (ctx: IContextMessage) => {
   const commandParams = ctx.message.text.split(" ");
   if (commandParams.length === 2) {
     const city = commandParams[1];

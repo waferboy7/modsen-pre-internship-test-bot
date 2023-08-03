@@ -13,10 +13,10 @@ interface ISceneCustom extends ISceneSession {
   time?: string;
 }
 
-export default interface MyContext extends Context {
+export default interface IContext extends Context {
   myContextProp: string;
 
-  scene: Scenes.SceneContextScene<MyContext, ISceneCustom>;
+  scene: Scenes.SceneContextScene<IContext, ISceneCustom>;
 
   session: any;
 }
