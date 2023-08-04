@@ -15,8 +15,13 @@
     "simple-import-sort/exports": "error",
     "import/first": "error",
     "import/newline-after-import": "error",
-
+    "consistent-return": "off",
+    "import/no-extraneous-dependencies": "off",
+    "object-curly-newline": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
+    
     "max-len": "off",
-    "no-console": "off"
+    "no-console": "off",
+    "no-restricted-syntax": "off"
   }
 }
