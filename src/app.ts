@@ -36,6 +36,8 @@ bot.use((ctx: IContext, next) => {
   ctx.session.name ??= '';
   ctx.session.date ??= '';
   ctx.session.time ??= '';
+  ctx.session.subscribeCity ??= '';
+  ctx.session.subscribeTime ??= '';
 
   return next();
 });
@@ -72,11 +74,8 @@ bot.command('info', infoCommand);
 
 bot.on('message', commandNotFound);
 
-cron.schedule('0 * * * *', () => {
-  sendNotification();
-});
-
 cron.schedule('* * * * *', () => {
+  sendNotification();
   sendReminde();
 });
 

@@ -5,7 +5,7 @@ import { BaseScene } from 'telegraf/scenes';
 import getFullUrlWeather from '../../../config/constaint/getFullUrlWeather.js';
 import IContext from '../../../config/interfaces/IContext.js';
 import WeatherResponse from '../../../config/interfaces/WeatgerResponce.js';
-import { isSubcribed, subscribeWeatherBD } from '../../../models/data-access/subcribeWeather.js';
+import { isSubcribed } from '../../../models/data-access/subcribeWeather.js';
 
 const subscribeScene = new BaseScene<IContext>('subscribe');
 
@@ -30,19 +30,21 @@ subscribeScene.on(message('text'), async (ctx) => {
 
     if (await isSubcribed(id)) {
       await ctx.reply('Вы уже подписаны на уведомления о погоде');
+
+      await ctx.scene.leave();
     } else {
       const city = ctx.message.text;
 
       await axios.get(getFullUrlWeather(city)).then(({ data }: { data: WeatherResponse }) => data.name);
 
-      await subscribeWeatherBD(id, city);
+      ctx.session.subscribeCity = city;
 
-      ctx.reply(`Вы подписались на подписку погоды по городу ${city}`);
+      await ctx.scene.leave();
+      await ctx.scene.enter('subscribeSceneTime');
     }
-
-    await ctx.scene.leave();
   } catch (error) {
-    ctx.reply('Пожалуйста, введите город еще раз');
+    console.log((error as Error).message);
+    ctx.reply('Пожалуйста, либо введите город еще раз, либо введите /leave, чтобы отменить команду');
   }
 });
 

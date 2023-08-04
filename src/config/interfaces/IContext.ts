@@ -11,6 +11,8 @@ interface ISceneCustom extends ISceneSession {
   name?: string;
   date?: string;
   time?: string;
+  subscribeCity?: string;
+  subscribeTime?: string;
 }
 
 export default interface IContext extends Context {

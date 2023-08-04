@@ -29,6 +29,9 @@ export default async function sendNotification() {
   const users: UserNotification[] = await checkNotification();
 
   if (users.length > 0) {
-    users.forEach((user) => getWeatherInfo(user));
+    users.forEach((user) => {
+      getWeatherInfo(user);
+      console.log(`Погода отправлена пользователю: ${user.user_id} город: ${user.city}`);
+    });
   }
 }
