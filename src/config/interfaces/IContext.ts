@@ -8,12 +8,17 @@ interface ISceneCustom extends ISceneSession {
   lon?: string;
   radius?: number;
   kind?: string;
+  name?: string;
+  date?: string;
+  time?: string;
+  subscribeCity?: string;
+  subscribeTime?: string;
 }
 
-export default interface MyContext extends Context {
+export default interface IContext extends Context {
   myContextProp: string;
 
-  scene: Scenes.SceneContextScene<MyContext, ISceneCustom>;
+  scene: Scenes.SceneContextScene<IContext, ISceneCustom>;
 
   session: any;
 }

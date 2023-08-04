@@ -13,12 +13,16 @@ const getReminde = async (reminder: IReminde) => {
 };
 
 export default async function sendReminde() {
-  const reminders: IReminde[] = await checkReminde(new Date());
+  try {
+    const reminders: IReminde[] = await checkReminde(new Date());
 
-  if (reminders.length > 0) {
-    reminders.forEach(async (reminder: IReminde) => {
-      await getReminde(reminder);
-      await deleteReminde(reminder.id);
-    });
+    if (reminders.length > 0) {
+      reminders.forEach(async (reminder: IReminde) => {
+        await getReminde(reminder);
+        await deleteReminde(reminder.id);
+      });
+    }
+  } catch (error) {
+    console.log((error as Error).message);
   }
 }
