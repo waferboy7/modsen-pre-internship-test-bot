@@ -9,6 +9,7 @@ const helpCommand = async (ctx: Context) => {
   const subscribeMessage = `/subscribe - подписаться на рассылку погоды в введенном городе в введенное время`;
   const unsubscribeMessagee = `/unsubscribe - отписаться от рассылки на погоду`;
   const remindeMessage = `/reminde - создать напоминание на введенную дату и время`;
+  const recommendMessage = `/recommend - рекомендация мест по городе или координатам по выбранной категории по заданному радиусу`;
   const infoMessage = `/info - предоставляет данные о подписке на рассылку погоды, а также о всех установленных напоминаниях`;
 
   const messages = [
@@ -20,6 +21,7 @@ const helpCommand = async (ctx: Context) => {
     subscribeMessage,
     unsubscribeMessagee,
     remindeMessage,
+    recommendMessage,
     infoMessage,
   ];
 
