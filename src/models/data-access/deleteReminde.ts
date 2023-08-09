@@ -11,7 +11,7 @@ async function deleteReminde(id: number) {
 
     await client.query(query, values);
   } catch (error) {
-    console.log('Ошибка при удалении напоминания', (error as Error).message);
+    console.error('Ошибка при удалении напоминания', (error as Error).message);
   } finally {
     client.release();
   }

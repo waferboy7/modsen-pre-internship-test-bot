@@ -16,17 +16,17 @@ const toLocalISOString = (date: Date) => {
 export default async function checkReminde(time: Date) {
   const client: PoolClient = await startConnection();
 
-  // const timestamp = time.toISOString();
   const timestamp = toLocalISOString(time);
 
+  const query = `SELECT id, user_id, name FROM reminder WHERE time <= $1`;
+  const values = [timestamp];
+
   try {
-    const usersReminde: IReminde[] = await client
-      .query(`SELECT id, user_id, name FROM reminder WHERE time <= $1`, [timestamp])
-      .then((response) => response.rows);
+    const usersReminde: IReminde[] = await client.query(query, values).then((response) => response.rows);
 
     return usersReminde;
   } catch (error) {
-    console.log((error as Error).message);
+    console.error((error as Error).message);
     return [];
   } finally {
     client.release();

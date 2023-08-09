@@ -8,7 +8,7 @@ export default async function startConnection(): Promise<PoolClient> {
 
     return client;
   } catch (error) {
-    console.log('Ошибка бд', error);
+    console.error('Ошибка бд', error);
   }
 
   return pool.connect();

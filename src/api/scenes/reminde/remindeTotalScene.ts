@@ -15,9 +15,6 @@ remindeTotalScene.enter(async (ctx: IContext) => {
 
   const id = ctx.from?.id;
 
-  const fullData = new Date(`${date}T${time}:00.000+03:00`);
-
-  // await reminder(id, name, fullData);
   await reminder(id, name, `${date}T${time}:00.000+03:00`);
 
   ctx.reply(`Напоминание установленно на ${date} ${time}`);
