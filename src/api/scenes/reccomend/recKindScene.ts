@@ -3,24 +3,30 @@ import { message } from 'telegraf/filters';
 import { BaseScene } from 'telegraf/scenes';
 
 import kinds from '../../../config/constaint/categories.js';
+import {
+  ENTER_KIND,
+  ENTER_SOMETHING_TO_OR_LEAVE,
+  LEAVE,
+  LEAVE_COMMAND,
+  RECOMMEND,
+  RECOMMEND_KIND_SCENE,
+  RECOMMEND_KIND_SCENE_ENTER_MESSAGE,
+  RECOMMEND_RADIUS_SCENE,
+} from '../../../config/index.js';
 import IContext from '../../../config/interfaces/IContext.js';
 
-const recKindScene = new BaseScene<IContext>('recKindScene');
+const recKindScene = new BaseScene<IContext>(RECOMMEND_KIND_SCENE);
 
 const allKinds = kinds.flat();
 
 const keyboard = Markup.keyboard(kinds).resize().oneTime();
 
 recKindScene.enter(async (ctx) => {
-  await ctx.reply('Выберите категорию для поиска', keyboard);
+  await ctx.reply(RECOMMEND_KIND_SCENE_ENTER_MESSAGE, keyboard);
 });
 
-recKindScene.command('leave', async (ctx) => {
-  await ctx.scene.leave();
-  await ctx.scene.enter('recommend');
-});
-
-recKindScene.command('exit', async (ctx) => {
+recKindScene.command(LEAVE, async (ctx) => {
+  await ctx.reply(LEAVE_COMMAND(RECOMMEND));
   await ctx.scene.leave();
 });
 
@@ -30,9 +36,9 @@ recKindScene.on(message('text'), async (ctx) => {
     ctx.session.kind = text;
 
     await ctx.scene.leave();
-    await ctx.scene.enter('recRadiusScene');
+    await ctx.scene.enter(RECOMMEND_RADIUS_SCENE);
   } else {
-    await ctx.reply('Введите либо категорию для поиска, либо команду /leave для ввода категории, либо /exit для выхода из рекомендации');
+    await ctx.reply(ENTER_SOMETHING_TO_OR_LEAVE(ENTER_KIND));
   }
 });
 

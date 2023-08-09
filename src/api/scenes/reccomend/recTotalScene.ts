@@ -1,17 +1,17 @@
 import axios from 'axios';
 import { BaseScene } from 'telegraf/scenes';
 
-import { LIMIT_REC, REC_KEY, REC_URL } from '../../../config/index.js';
+import { LIMIT_REC, REC_KEY, REC_URL, RECOMMEND_TOTAL_SCENE } from '../../../config/index.js';
 import IContext from '../../../config/interfaces/IContext.js';
 import { RecFeatuers, RecResponce } from '../../../config/interfaces/RecResponce.js';
 
-const getFullUrlRec = (lat: string, lon: string, kind: string, radius: string) => {
-  const radiusM = +radius * 1000;
+const getFullUrlRec = (lat: string, lon: string, kind: string, radius: number) => {
+  const radiusM = Number(radius) * 1000;
 
   return `${REC_URL}radius=${radiusM}&lon=${lon}&lat=${lat}&kinds=${kind}&limit=${LIMIT_REC}&apikey=${REC_KEY}`;
 };
 
-const recTotalScene = new BaseScene<IContext>('recTotalScene');
+const recTotalScene = new BaseScene<IContext>(RECOMMEND_TOTAL_SCENE);
 
 recTotalScene.enter(async (ctx) => {
   const { lat, lon, kind, radius } = ctx.session;
@@ -34,11 +34,11 @@ recTotalScene.enter(async (ctx) => {
       const [lonPlace, latPlace] = place.geometry.coordinates;
       const { dist } = place.properties;
 
-      await ctx.reply(
-        `Название: ${name}\n\nРасстояние до места: ${Math.floor(
-          dist,
-        )} м\n\nКоординаты места:\nширота = ${latPlace}\nдолгота = ${lonPlace}`,
-      );
+      const nameMessage = `Название: ${name}`;
+      const distanceMessage = `Расстояние до места: ${Math.floor(dist)} м`;
+      const coordsPlaceMessage = `Координаты места:\nширота = ${latPlace}\nдолгота = ${lonPlace}`;
+
+      await ctx.reply(`${nameMessage}\n\n${distanceMessage}\n\n${coordsPlaceMessage}`);
     });
   }
 

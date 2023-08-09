@@ -7,8 +7,7 @@ const getReminde = async (reminder: IReminde) => {
   try {
     await bot.telegram.sendMessage(reminder.user_id, reminder.name);
   } catch (error) {
-    console.log('sendReminde error: ', (error as Error).message);
-    bot.telegram.sendMessage(reminder.user_id, 'Произошла ошибка напоминания, обратитесь к @waferboy');
+    console.error('sendReminde error: ', (error as Error).message);
   }
 };
 
@@ -23,6 +22,6 @@ export default async function sendReminde() {
       });
     }
   } catch (error) {
-    console.log((error as Error).message);
+    console.error((error as Error).message);
   }
 }

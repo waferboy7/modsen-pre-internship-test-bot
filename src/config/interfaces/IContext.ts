@@ -1,24 +1,25 @@
 import { Context, Scenes } from 'telegraf';
 
-import ISceneSession from './ISceneSession.js';
-
-interface ISceneCustom extends ISceneSession {
+interface ISceneCustom extends Scenes.SceneSessionData {
   mySceneSessionProp: number;
-  lat?: string;
-  lon?: string;
-  radius?: number;
-  kind?: string;
-  name?: string;
-  date?: string;
-  time?: string;
-  subscribeCity?: string;
-  subscribeTime?: string;
+}
+
+export interface ISession extends Scenes.SceneSession<ISceneCustom> {
+  lat: string;
+  lon: string;
+  radius: number;
+  kind: string;
+  name: string;
+  date: string;
+  time: string;
+  subscribeCity: string;
+  subscribeTime: string;
 }
 
 export default interface IContext extends Context {
   myContextProp: string;
 
-  scene: Scenes.SceneContextScene<IContext, ISceneCustom>;
+  scene: Scenes.SceneContextScene<IContext, Scenes.SceneSessionData>;
 
-  session: any;
+  session: ISession;
 }

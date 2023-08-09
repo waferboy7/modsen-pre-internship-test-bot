@@ -13,14 +13,16 @@ function capitalizeFirstLetter(str: string) {
 const getWeatherInfo = async (user: UserNotification) => {
   try {
     await axios.get(getFullUrlWeather(user.city)).then(({ data }: { data: WeatherResponse }) => {
-      const answer = `Прогноз погоды в городе ${data.name}:\n${capitalizeFirstLetter(
-        data.weather[0].description,
-      )}\n\nТемпература: ${Math.floor(data.main.temp)} °C\n\nОщущается как ${Math.floor(data.main.feels_like)} °C\n`;
+      const cityMessage = `Прогноз погоды в городе ${data.name}:\n${capitalizeFirstLetter(data.weather[0].description)}`;
+      const tempMessage = `Температура: ${Math.floor(data.main.temp)} °C`;
+      const feelsLikeMessage = `Ощущается как ${Math.floor(data.main.feels_like)} °C\n`;
+
+      const answer = `${cityMessage}\n\n${tempMessage}\n\n${feelsLikeMessage}`;
 
       bot.telegram.sendMessage(user.user_id, answer);
     });
   } catch (error) {
-    console.log('sendNotification error: ', (error as Error).message);
+    console.error('sendNotification error: ', (error as Error).message);
     bot.telegram.sendMessage(user.user_id, 'Произошла ошибка рассылки, обратитесь к @waferboy');
   }
 };
@@ -30,8 +32,12 @@ export default async function sendNotification() {
 
   if (users.length > 0) {
     users.forEach((user) => {
-      getWeatherInfo(user);
-      console.log(`Погода отправлена пользователю: ${user.user_id} город: ${user.city}`);
+      try {
+        getWeatherInfo(user);
+        console.error(`Погода отправлена пользователю: ${user.user_id} город: ${user.city}`);
+      } catch (error) {
+        console.error((error as Error).message);
+      }
     });
   }
 }
