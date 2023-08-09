@@ -1,5 +1,6 @@
 import { BaseScene } from 'telegraf/scenes';
 
+import { ERROR_MESSAGE } from '../../../config/index.js';
 import IContext from '../../../config/interfaces/IContext.js';
 import { subscribeWeatherBD } from '../../../models/data-access/subcribeWeather.js';
 
@@ -18,8 +19,8 @@ subscribeSceneTotal.enter(async (ctx) => {
 
     await ctx.reply(`${messageCity}\n${messageTime}`);
   } catch (error) {
-    console.log((error as Error).message);
-    await ctx.reply('Что-то пошло не так...');
+    console.error((error as Error).message);
+    await ctx.reply(ERROR_MESSAGE);
   }
 
   await ctx.scene.leave();

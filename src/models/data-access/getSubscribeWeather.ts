@@ -13,7 +13,7 @@ export default async function getSubscribeWeather(userId: number) {
 
     return city;
   } catch (error) {
-    console.log((error as Error).message);
+    console.error((error as Error).message);
 
     return "";
   } finally {

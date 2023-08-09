@@ -1,13 +1,22 @@
 import { message } from 'telegraf/filters';
 import { BaseScene } from 'telegraf/scenes';
 
+import {
+  ENTER_CITY,
+  ENTER_SOMETHING_TO_OR_LEAVE,
+  LEAVE,
+  LEAVE_COMMAND,
+  RECOMMEND,
+  RECOMMEND_COORDS_SCENE_ENTER_MESSAGE,
+  RECOMMEND_KIND_SCENE,
+} from '../../../config/index.js';
 import IContext from '../../../config/interfaces/IContext.js';
 import getCordsByCity from '../../../models/data-access/getCordsByCity.js';
 
-const recCoordsScene = new BaseScene<IContext>('recommend');
+const recCoordsScene = new BaseScene<IContext>(RECOMMEND);
 
 recCoordsScene.enter((ctx) => {
-  ctx.reply('Пожалуйста, введите ваш город или предоставьте доступ к вашим геоданным.', {
+  ctx.reply(RECOMMEND_COORDS_SCENE_ENTER_MESSAGE, {
     reply_markup: {
       keyboard: [[{ text: 'Предоставить доступ к геоданным', request_location: true }]],
       one_time_keyboard: true,
@@ -16,7 +25,8 @@ recCoordsScene.enter((ctx) => {
   });
 });
 
-recCoordsScene.command('leave', async (ctx) => {
+recCoordsScene.command(LEAVE, async (ctx) => {
+  await ctx.reply(LEAVE_COMMAND(RECOMMEND));
   await ctx.scene.leave();
 });
 
@@ -26,10 +36,8 @@ recCoordsScene.on(message('location'), async (ctx) => {
   ctx.session.lat = String(latitude);
   ctx.session.lon = String(longitude);
 
-  ctx.reply(`${latitude} and ${longitude}`);
-
   await ctx.scene.leave();
-  await ctx.scene.enter('recKindScene');
+  await ctx.scene.enter(RECOMMEND_KIND_SCENE);
 });
 
 recCoordsScene.on(message('text'), async (ctx) => {
@@ -38,15 +46,13 @@ recCoordsScene.on(message('text'), async (ctx) => {
 
     const { lat, lon } = coords;
 
-    ctx.reply(`${lat}, ${lon}`);
-
     ctx.session.lat = lat;
     ctx.session.lon = lon;
 
     await ctx.scene.leave();
     await ctx.scene.enter('recKindScene');
   } catch (error) {
-    ctx.reply('Введите город еще раз');
+    ctx.reply(ENTER_SOMETHING_TO_OR_LEAVE(ENTER_CITY));
   }
 });
 

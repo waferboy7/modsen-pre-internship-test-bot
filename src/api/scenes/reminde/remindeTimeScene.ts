@@ -2,6 +2,7 @@ import { message } from 'telegraf/filters';
 import { BaseScene } from 'telegraf/scenes';
 
 import { timeRegExp } from '../../../config/constaint/regexp.js';
+import { ENTER_SOMETHING_TO_OR_LEAVE, ENTER_TIME, LEAVE, LEAVE_COMMAND, REMINDE } from '../../../config/index.js';
 import IContext from '../../../config/interfaces/IContext.js';
 
 const remindeTimeScene = new BaseScene<IContext>('remindeTimeScene');
@@ -10,12 +11,9 @@ remindeTimeScene.enter(async (ctx) => {
   await ctx.reply('Введите время в виде HH:MM, когда необходимо отправить напоминание');
 });
 
-remindeTimeScene.command('leave', async (ctx) => {
-  await ctx.scene.leave();
-  await ctx.scene.enter('remindeDateScene');
-});
+remindeTimeScene.command(LEAVE, async (ctx) => {
+  await ctx.reply(LEAVE_COMMAND(REMINDE));
 
-remindeTimeScene.command('exit', async (ctx) => {
   await ctx.scene.leave();
 });
 
@@ -28,7 +26,7 @@ remindeTimeScene.on(message('text'), async (ctx) => {
     await ctx.scene.leave();
     await ctx.scene.enter('remindeTotalScene');
   } else {
-    ctx.reply('Повторите ввод времени');
+    ctx.reply(ENTER_SOMETHING_TO_OR_LEAVE(ENTER_TIME));
   }
 });
 

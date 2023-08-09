@@ -1,22 +1,18 @@
-import IContextMessage from '../../config/interfaces/IContextMessage.js';
+import { NOT_SUBSCRIBE_WEATHER, UNSUBSCRIBE_WEATHER } from '../../config/index.js';
+import IContext from '../../config/interfaces/IContext.js';
 import { isSubcribed, unSubscribeWeatherBD } from '../../models/data-access/subcribeWeather.js';
 
-const unSubscribeCommand = async (ctx: IContextMessage) => {
-  const { message } = ctx;
+const unSubscribeCommand = async (ctx: IContext) => {
+  const id = ctx.message?.from.id;
 
-  try {
-    const statusSubscribe = await isSubcribed(message.from.id);
+  const statusSubscribe = await isSubcribed(String(id));
 
-    if (!statusSubscribe) {
-      ctx.reply('Вы не подписаны на уведомления');
-    } else {
-      await unSubscribeWeatherBD(message.from.id);
+  if (!statusSubscribe) {
+    ctx.reply(NOT_SUBSCRIBE_WEATHER);
+  } else {
+    await unSubscribeWeatherBD(String(id));
 
-      ctx.reply(`Вы отписались от подписки погоды по городу`);
-    }
-  } catch (error) {
-    console.log('subcribeCommand: ', (error as Error).message);
-    throw error;
+    ctx.reply(UNSUBSCRIBE_WEATHER);
   }
 };
 

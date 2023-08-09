@@ -3,14 +3,16 @@ import startConnection from './startConnection.js';
 export default async function newUser(userId: string) {
   const client = await startConnection();
 
-  const user: object[] = await client
-    .query(`SELECT user_id FROM subscribers WHERE user_id = $1`, [userId])
-    .then((responce) => responce.rows);
+  const checkUserQuery = `SELECT user_id FROM subscribers WHERE user_id = $1`;
+  const checkUserValues = [userId];
+
+  const user: object[] = await client.query(checkUserQuery, checkUserValues).then((responce) => responce.rows);
 
   if (user.length === 0) {
-    await client.query(`INSERT INTO subscribers VALUES(default, $1, false, '00:00')`, [userId]);
+    const newUserQuery = `INSERT INTO subscribers VALUES(default, $1, false, '00:00')`;
+    const newUserValues = [userId];
 
-    console.log(`Зарегистрирован новый пользователь ${userId}`);
+    await client.query(newUserQuery, newUserValues);
   }
 
   client.release();
